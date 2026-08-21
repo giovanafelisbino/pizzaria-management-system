@@ -1,17 +1,14 @@
 // src/database/database.ts
 
-import { Pool } from 'pg'; // Importa a classe Pool da biblioteca 'pg'
+import { Pool } from 'pg';
+import 'dotenv/config';
 
-// Cria uma nova instância do Pool com as configurações de conexão.
-// Estas são as mesmas credenciais que você usou no comando do Docker.
 const pool = new Pool({
-  user: 'Pizzaria',
-  host: 'localhost', // Se o Docker estiver rodando na sua máquina
-  database: 'db_pizzaria',
-  password: 'Pizzaria@2025',
-  port: 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: Number(process.env.DB_PORT) || 5432,
 });
 
-// A linha mais importante: exporta a instância do pool como uma constante nomeada.
-// É isso que permite que outros arquivos façam: import { pool } from './database/database';
 export { pool };
