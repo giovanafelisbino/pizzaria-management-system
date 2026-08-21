@@ -190,11 +190,6 @@ Algumas melhorias que podem ser incorporadas ao projeto:
 * migrações de banco de dados;
 * utilização de Docker Compose para simplificar a configuração do ambiente;
 * melhorias de responsividade e experiência do usuário.
-
-## 📸 Interface
-
-> Screenshots da aplicação serão adicionados aqui.
-
 ---
 
 Desenvolvido como projeto acadêmico durante a graduação em **Ciência da Computação**, com foco na aplicação prática de TypeScript e conceitos de desenvolvimento web full-stack.
