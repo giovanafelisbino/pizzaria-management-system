@@ -1,117 +1,200 @@
-### Bárbara Falcão - 2506486 
-### Giovana de Godoy Felisbino - 2507579
-### Giovanna Falgetano - 2512938
-### Lais da Rosa Câmara - 2505420
+# 🍕 Sistema de Gestão de Pizzaria
 
-# Sistema de Gestão de Pizzaria
+Aplicação web full-stack para gerenciamento das operações de uma pizzaria, desenvolvida com **Node.js, Express e TypeScript**.
 
-## 1. Visão Geral
+O sistema permite gerenciar produtos e clientes, realizar pedidos e acompanhar informações de vendas por meio de um painel administrativo. O backend é organizado em camadas seguindo o padrão **Model-Service-Controller**, com persistência de dados em **PostgreSQL**.
 
-Este projeto é uma aplicação web full-stack desenvolvida para a gestão completa das operações de uma pizzaria. A solução inclui uma interface dinâmica para os clientes visualizarem o cardápio e realizarem pedidos, além de um painel administrativo robusto para o gerenciamento de produtos, clientes e análise de vendas.
+## 🖥️ Funcionalidades
 
-Construído com **Node.js, Express e TypeScript** no backend, o sistema se destaca pela sua arquitetura limpa (Model-Service-Controller) e por uma abordagem de persistência de dados inteligente, utilizando arquivos `.csv` para dados estruturados e `.txt` para o histórico de comprovantes. O frontend é reativo e moderno, construído com **HTML, CSS e JavaScript puro**.
+### 🍕 Gestão de produtos
 
-## 2. Principais Funcionalidades
+* Cadastro, consulta, edição e exclusão de produtos (**CRUD**);
+* Organização do cardápio por categorias;
+* Filtro dinâmico de produtos na interface.
 
--   **Gestão Completa de Produtos (CRUD):**
-    -   **Criação, Leitura, Atualização e Exclusão** de todos os itens do cardápio.
-    -   Suporte a múltiplas categorias, incluindo "Pizzas Salgadas", "Pizzas Doces", "Bebidas" e "Sobremesas".
+### 👤 Gestão de clientes
 
--   **Filtro Dinâmico de Produtos:** A interface principal permite que os clientes filtrem o cardápio por categoria com um único clique, atualizando a visualização dos produtos em tempo real.
+* Cadastro de novos clientes;
+* Consulta de clientes durante a finalização dos pedidos.
 
--   **Gestão de Clientes:**
-    -   Página dedicada para o cadastro de novos clientes.
-    -   Listagem de clientes no momento da finalização do pedido.
+### 🛒 Pedidos
 
--   **Carrinho de Compras Persistente:** O carrinho utiliza o `localStorage` do navegador para que os itens selecionados não sejam perdidos ao recarregar a página.
+* Carrinho de compras com persistência utilizando `localStorage`;
+* Associação de pedidos a clientes;
+* Seleção de múltiplos produtos;
+* Fluxo de checkout;
+* Geração de comprovantes dos pedidos realizados.
 
--   **Sistema de Pedidos e Geração de Comprovantes:**
-    -   Fluxo de checkout completo, associando um pedido a um cliente e a múltiplos itens.
-    -   Para cada pedido finalizado, um arquivo de comprovante (`.txt`) é gerado e salvo automaticamente no servidor, criando um histórico de transações.
+### 📊 Painel administrativo
 
--   **Painel Administrativo com Relatórios de Vendas:**
-    -   Uma página dedicada (`/admin.html`) para a visualização de métricas de negócio.
-    -   O sistema lê **todo o histórico** de comprovantes salvos, processa os dados e gera **relatórios de vendas semanais e mensais**, exibindo o total arrecadado em cada período.
+* Área dedicada ao acompanhamento das vendas;
+* Processamento do histórico de pedidos;
+* Relatórios semanais e mensais;
+* Visualização do total de vendas por período.
 
-## 3. Estrutura do Projeto
+## 🏗️ Arquitetura
 
-O código é organizado seguindo o padrão de design **Model-Service-Controller** para garantir a separação de responsabilidades e facilitar a manutenção.
+O backend foi estruturado utilizando o padrão **Model-Service-Controller**, separando responsabilidades entre representação dos dados, regras de negócio, tratamento das requisições e definição das rotas.
 
--   **/public**: Contém todos os arquivos do frontend, incluindo `index.html`, `admin.html`, e os scripts `script.js` e `admin.js`.
--   **/src**: Contém todo o código-fonte do backend em TypeScript.
-    -   **/controllers**: Recebe as requisições HTTP e orquestra as operações (ex: `ProdutoController.ts`, `RelatorioController.ts`).
-    -   **/database**: Armazena os arquivos `clientes.csv` e `itens.csv`.
-    -   **/models**: Define as interfaces e tipos que representam os dados (`Produto.ts`, `Cliente.ts`).
-    -   **/routes**: Define as rotas da API em `api.ts`.
-    -   **/services**: Contém a lógica de negócio principal, incluindo a manipulação dos arquivos (`ProdutoService.ts`, `RelatorioService.ts`).
-    -   `server.ts`: Ponto de entrada que configura e inicia o servidor Express.
--   **/comprovantes**: Diretório onde os comprovantes de pedido em `.txt` são salvos.
+```text
+src/
+├── controllers/    # Tratamento das requisições
+├── database/       # Configuração da conexão com PostgreSQL
+├── models/         # Interfaces e tipos da aplicação
+├── routes/         # Definição das rotas
+├── services/       # Regras de negócio
+└── server.ts       # Inicialização do servidor
 
-## 4. Tecnologias Utilizadas
+public/
+├── index.html
+├── admin.html
+├── script.js
+└── admin.js
 
--   **Backend**: Node.js, Express, TypeScript
--   **Manipulação de CSV**: `csv-parser`, `csv-writer`
--   **Desenvolvimento**: `ts-node-dev`
--   **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+comprovantes/
+└── arquivos gerados pelos pedidos
+```
 
-## 5. Instalação e Execução
+O acesso ao PostgreSQL é centralizado por meio de um `Pool` de conexões, enquanto as configurações do ambiente são fornecidas por **variáveis de ambiente**, evitando manter credenciais diretamente no código-fonte.
 
-**Pré-requisitos**:
-*   Node.js (versão 14 ou superior)
-*   NPM
-*   pgAdmin 4
-*   Dokcer v28.4.0
+## 🛠️ Tecnologias
 
-**Passos para a instalação do container no Docker:**
-1. Abra o terminal PowerShell
-2. Copie e cole o código abaixo por completo
-    ```cmd powershell
-    hostname
-    docker run -d `
-    --name sistema-pizzaria `
-    -e POSTGRES_USER=Pizzaria `
-    -e POSTGRES_PASSWORD=Pizzaria@2025 `
-    -e POSTGRES_DB=db_pizzaria `
-    -p 5432:5432 `
-    postgres:latest 
-    ```
+### Backend
 
-**Passos para clonagem de repositório e acesso:**
+* Node.js
+* Express
+* TypeScript
+* PostgreSQL
 
-1.  Clone o repositório ou navegue até a pasta raiz do projeto.
-2.  Acessar a pasta "pizzaria-sistema" pelo terminal 
-    ```bash
-    cd 'pasta em que o repositório se encontra em sua máquina'
-    ```
-    ```bash
-    cd Pizzaria-Sistema
-    ```
-3.  Abra um terminal e instale as dependências:
-    ```bash
-    npm install
-    ```
-4. Coloque no terminal 
-    ```bash
-    npm install express
-    ```
+### Frontend
 
-**Passos para a configuração do pgAdmin 4:**
-1. Abra o pgAdmin (essa etapa pode demorar um pouco)
-2. Selecione "Add New Server"e dê um nome para a imagem do servidor 
-3. Coloque o nome do host como `localhost`
-4. Mantenha a porta como `5432`, se ela não estiver, altere-a 
-5. Altere o username para `Pizzaria`
-6. Coloque a senha `Pizzaria@2025`
-7. Salve as alterações 
-8. Entre no servidor 
-9. Entre em "Database"
-10. Entre em "db_pizzaria"
-11. Clique com o botão direito do mouse
-12. Selecione o arquivo chamado "database" do repositório clonado
+* HTML5
+* CSS3
+* JavaScript
 
-**Para executar em modo de desenvolvimento (com recarregamento automático):**
+### Infraestrutura e ferramentas
+
+* Docker
+* npm
+* pgAdmin 4
+* Git
+
+## 🚀 Executando o projeto
+
+### Pré-requisitos
+
+Para executar a aplicação localmente, você precisará de:
+
+* Node.js
+* npm
+* Docker
+* PostgreSQL em container
+
+## 1. Clone o repositório
+
+```bash
+git clone <URL-DO-REPOSITORIO>
+cd <NOME-DO-REPOSITORIO>
+```
+
+## 2. Instale as dependências
+
+```bash
+npm install
+```
+
+## 3. Configure as variáveis de ambiente
+
+Crie um arquivo `.env` na raiz do projeto utilizando `.env.example` como referência:
+
+```env
+DB_USER=seu_usuario
+DB_HOST=localhost
+DB_NAME=db_pizzaria
+DB_PASSWORD=sua_senha
+DB_PORT=5432
+```
+
+> O arquivo `.env` não deve ser versionado. Mantenha-o listado no `.gitignore`.
+
+## 4. Inicie o PostgreSQL
+
+Exemplo utilizando Docker:
+
+```bash
+docker run -d \
+  --name sistema-pizzaria \
+  -e POSTGRES_USER=seu_usuario \
+  -e POSTGRES_PASSWORD=sua_senha \
+  -e POSTGRES_DB=db_pizzaria \
+  -p 5432:5432 \
+  postgres:latest
+```
+
+Os valores utilizados na criação do container devem corresponder às configurações definidas no seu arquivo `.env`.
+
+## 5. Execute a aplicação
+
+Para iniciar em modo de desenvolvimento:
+
 ```bash
 npm run dev
 ```
 
-O servidor será iniciado em `http://localhost:3000`.
+O servidor será iniciado em:
+
+```text
+http://localhost:3000
+```
+
+## 🔐 Configuração e segurança
+
+As credenciais de acesso ao PostgreSQL são carregadas por meio de variáveis de ambiente.
+
+O repositório disponibiliza apenas um arquivo `.env.example` com a estrutura necessária para configuração. O arquivo `.env` real é ignorado pelo Git para evitar o versionamento de credenciais locais.
+
+Exemplo:
+
+```env
+DB_USER=
+DB_HOST=localhost
+DB_NAME=db_pizzaria
+DB_PASSWORD=
+DB_PORT=5432
+```
+
+## 🧠 Conceitos aplicados
+
+Durante o desenvolvimento foram aplicados conceitos de:
+
+* desenvolvimento web full-stack;
+* APIs e requisições HTTP;
+* arquitetura em camadas;
+* operações CRUD;
+* programação com TypeScript;
+* modelagem e persistência de dados com PostgreSQL;
+* gerenciamento de conexões com banco de dados;
+* manipulação de estado no frontend com `localStorage`;
+* conteinerização com Docker;
+* separação entre configuração e código por meio de variáveis de ambiente;
+* versionamento com Git.
+
+## 📈 Possíveis evoluções
+
+Algumas melhorias que podem ser incorporadas ao projeto:
+
+* testes automatizados;
+* autenticação e autorização do painel administrativo;
+* validação mais robusta das entradas da API;
+* tratamento centralizado de erros;
+* migrações de banco de dados;
+* utilização de Docker Compose para simplificar a configuração do ambiente;
+* melhorias de responsividade e experiência do usuário.
+
+## 📸 Interface
+
+> Screenshots da aplicação serão adicionados aqui.
+
+---
+
+Desenvolvido como projeto acadêmico durante a graduação em **Ciência da Computação**, com foco na aplicação prática de TypeScript e conceitos de desenvolvimento web full-stack.
